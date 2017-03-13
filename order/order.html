@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>排序</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <style>
+        .pt10{
+            padding-top: 10px;
+        }
+        .tc{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="column col-xs-6 pt10">
+                <form class="form-inline" id="number-form">
+                    <div class="form-group">
+                        <label for="numberInput">数字</label>
+                            <input type="text" class="form-control" placeholder="请输入要排序的数字" id="numberInput" >
+                    </div>
+                  <button class="btn btn-primary" type="submit">提交</button>
+                </form>
+                <!--第一列-->
+                <div class="row pt10">
+                    <!--padding-top:10-->
+                    <div class="row col-xs-6 col-xs-offset-3">
+                     <!--把父容器的也作12拆分，取其六     后者负责居中-->
+                    <table class="table table-striped ">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>数字</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td colspan="2" class="tc" >目前没有数字</td>
+                                <!--占据列的数量-->
+                                <td>2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-default" id="sortBtn">排序</button>
+                    </div>
+                </div>
+                </div>
+            <div class="column col-xs-6 pt10">
+                <p class="bg-primary">
+
+                </p>
+                </div>
+        </div>
+        <!--栅格  每人六列-->
+    </div>
+
+    <script>
+    // o是对象的意思
+    const oForm = document.getElementById('number-form');
+    const oNumIput = document.getElementById('numberInput');
+    const sortBtn = document.getElementById('sortBtn');
+    const oMsg = document.querySelector('.bg-primary');
+    let gNum = 1;
+    const numArr = [];
+    const arr = [];
+    const orderArr = [];
+    for(let i=0;i<11;i++){
+        arr[i] = 0;
+    }
+        oForm.addEventListener('submit',function(event){
+        // 阻止默认提交
+        event.preventDefault();
+        // .trim  去前后空格
+        const num = oNumIput.value.trim();
+        // 表单 string类型 变数字  非数字 返回0
+        if(num.length>0 && !isNaN(num)){
+            // 判断非数字的函数
+            if(gNum==1){
+                document.querySelector('tbody').innerHTML= getTrHtml(num);
+                }
+            // getTrHtml(num);
+            else{
+            document.querySelector('tbody').innerHTML += getTrHtml(num);
+            }
+            numArr.push(parseInt(num));
+            gNum++;
+            oNumIput.value='';
+        }
+        else{alert('请输入数字');}
+              // alert(num.length);
+    });
+    // 功能：提供新的一行。序号，从1增
+    // 用户在表单中填的值加进去，返回tr html
+
+
+    function getTrHtml(num){
+        const str = `
+            <tr>
+                <td>${gNum}</td>
+                <td>${num}</td>
+            </tr>
+            `;
+        return str;
+    }
+    // 考试完，要将同学们的成绩进行排序5 3 5 2 8     分数的从小到大提序。
+    // 数组 桶排序 11个数的数组 0-10分  下标就是顺序
+
+
+
+
+    sortBtn.addEventListener('click',function(){
+        // console.log(numArr.sort(function(a,b){
+        //     return a>b;
+        // }));
+        // 当前用户输入的数字
+        // console.log(numArr);
+        for(let i=0;i<numArr.length;i++){
+            // numArr[0] = 5 标签 5
+            arr[numArr[i]] ++;
+        }
+        console.log(arr);
+        
+       for(let i=0;i<arr.length;i++){
+        for(let j=0;j<arr[i];j++)
+         {
+            //  console.log(i+',');
+            orderArr.push(i);
+         }
+   }
+    oMsg.innerHTML = `从小到大排序：${orderArr.join(',')} `;
+    });
+   
+    </script>
+</body>
+</html>
